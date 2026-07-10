@@ -1,4 +1,8 @@
 import readlineSync from "readline-sync";
+import { AutorMenu } from "./autorMenu";
+import { ClienteMenu } from "./clienteMenu";
+import { EmprestimoMenu } from "./emprestimoMenu";
+import { LivroMenu } from "./livroMenu";
 
 export class MainMenu {
   public async show(): Promise<void> {
@@ -22,19 +26,22 @@ export class MainMenu {
 
       switch (option) {
         case 1:
-          console.log("\nMenu de Autores");
+          const autorMenu = new AutorMenu();
+          await autorMenu.show();
           break;
-
         case 2:
-          console.log("\nMenu de Livros");
+          const livroMenu = new LivroMenu();
+          await livroMenu.show();
           break;
 
         case 3:
-          console.log("\nMenu de Clientes");
+          const clienteMenu = new ClienteMenu();
+          await clienteMenu.show();
           break;
 
         case 4:
-          console.log("\nMenu de Empréstimos");
+          const emprestimoMenu = new EmprestimoMenu();
+          await emprestimoMenu.show();
           break;
 
         case 5:
