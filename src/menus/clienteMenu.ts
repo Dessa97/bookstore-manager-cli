@@ -1,60 +1,144 @@
 import readlineSync from "readline-sync";
+import { ClienteController } from "../controllers/clienteController";
 
 export class ClienteMenu {
+  private clienteController = new ClienteController();
 
-    public async show(): Promise<void> {
+  public async show(): Promise<void> {
+    let opcao: number;
 
-        let option: number;
+    do {
+      console.clear();
 
-        do {
+      console.log("========== CLIENTES ==========");
+      console.log("1 - Cadastrar");
+      console.log("2 - Listar");
+      console.log("3 - Buscar por ID");
+      console.log("4 - Atualizar");
+      console.log("5 - Remover");
+      console.log("0 - Voltar");
 
-            console.clear();
+      opcao = readlineSync.questionInt("\nEscolha uma opcao: ");
 
-            console.log("========== CLIENTES ==========");
-            console.log("1 - Cadastrar");
-            console.log("2 - Listar");
-            console.log("3 - Buscar por ID");
-            console.log("4 - Atualizar");
-            console.log("5 - Remover");
-            console.log("0 - Voltar");
+      switch (opcao) {
+        case 1: {
+          const nome = readlineSync.question("Nome: ");
+          const email = readlineSync.question("Email: ");
+          const telefone = readlineSync.question("Telefone: ");
 
-            option = readlineSync.questionInt("\nEscolha uma opcao: ");
+          try {
+            await this.clienteController.cadastrar(nome, email, telefone);
+            console.log("\n✅ Cliente cadastrado com sucesso!");
+          } catch (error) {
+            console.log(`\n❌ ${(error as Error).message}`);
+          }
 
-            switch (option) {
+          readlineSync.question("\nPressione ENTER para continuar...");
+          break;
+        }
+        case 2: {
+          const clientes = await this.clienteController.listarClientes();
 
-                case 1:
-                    console.log("\nCadastrar Cliente");
-                    break;
+          console.clear();
+          console.log("========== CLIENTES ==========\n");
 
-                case 2:
-                    console.log("\nListar Clientes");
-                    break;
+          if (clientes.length === 0) {
+            console.log("Nenhum cliente cadastrado.");
+          } else {
+            clientes.forEach((cliente) => {
+              console.log(`ID: ${cliente.id}`);
+              console.log(`Nome: ${cliente.nome}`);
+              console.log(`Email: ${cliente.email}`);
+              console.log(`Telefone: ${cliente.telefone}`);
+              console.log("---------------------------");
+            });
+          }
 
-                case 3:
-                    console.log("\nBuscar Cliente");
-                    break;
+          readlineSync.question("\nPressione ENTER para continuar...");
+          break;
+        }
+        case 3: {
+          const id = readlineSync.questionInt("Informe o ID: ");
 
-                case 4:
-                    console.log("\nAtualizar Cliente");
-                    break;
+          const cliente = await this.clienteController.buscarClientePorId(id);
 
-                case 5:
-                    console.log("\nRemover Cliente");
-                    break;
+          if (!cliente) {
+            console.log("\nCliente não encontrado.");
+          } else {
+            console.log("\n===== CLIENTE =====");
+            console.log(`ID: ${cliente.id}`);
+            console.log(`Nome: ${cliente.nome}`);
+            console.log(`Email: ${cliente.email}`);
+            console.log(`Telefone: ${cliente.telefone}`);
+          }
 
-                case 0:
-                    break;
+          readlineSync.question("\nPressione ENTER para continuar...");
+          break;
+        }
+        case 4: {
+          const id = readlineSync.questionInt("Informe o ID do cliente: ");
 
-                default:
-                    console.log("\nOpcao inválida.");
+          const cliente = await this.clienteController.buscarClientePorId(id);
+
+          if (!cliente) {
+            console.log("\nCliente não encontrado.");
+          } else {
+            console.log("\n=== Dados atuais ===");
+            console.log(`Nome: ${cliente.nome}`);
+            console.log(`Email: ${cliente.email}`);
+            console.log(`Telefone: ${cliente.telefone}`);
+
+            const nome = readlineSync.question("Novo nome: ", {
+              defaultInput: cliente.nome,
+            });
+
+            const email = readlineSync.question("Novo email: ", {
+              defaultInput: cliente.email,
+            });
+
+            const telefone = readlineSync.question("Novo telefone: ", {
+              defaultInput: cliente.telefone,
+            });
+
+            try {
+              await this.clienteController.atualizarCliente(
+                id,
+                nome,
+                email,
+                telefone
+              );
+
+              console.log("\n✅ Cliente atualizado com sucesso!");
+            } catch (error) {
+              console.log(`\n❌ ${(error as Error).message}`);
             }
+          }
 
-            if (option !== 0) {
-                readlineSync.question("\nPressione ENTER...");
-            }
+          readlineSync.question("\nPressione ENTER...");
+          break;
+        }
+        case 5: {
+          const id = readlineSync.questionInt("Informe o ID do cliente: ");
 
-        } while (option !== 0);
+          try {
+            await this.clienteController.excluirCliente(id);
 
-    }
+            console.log("\n✅ Cliente removido com sucesso!");
+          } catch (error) {
+            console.log(`\n❌ ${(error as Error).message}`);
+          }
 
+          readlineSync.question("\nPressione ENTER para continuar...");
+          break;
+        }
+        case 0: {
+          break;
+        }
+
+        default:
+          console.log("\nOpção inválida!");
+          readlineSync.question("\nPressione ENTER...");
+      }
+    } while (opcao !== 0);
+  }
 }
