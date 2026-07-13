@@ -1,9 +1,15 @@
-export interface Livro {
-  id?: number;
-  titulo: string;
-  isbn: string;
-  ano_publicacao: number;
-  quantidade_total: number;
-  quantidade_disponivel: number;
-  autor_id: number;
+import { ILivro } from "../interfaces/ILivro";
+
+export class Livro implements ILivro {
+
+  constructor(
+    public titulo: string,
+    public isbn: string,
+    public ano_publicacao: number,
+    public quantidade_total: number,
+    public quantidade_disponivel: number,
+    public autor_id: number,
+    public id?: number,
+  ) {}
+
 }
