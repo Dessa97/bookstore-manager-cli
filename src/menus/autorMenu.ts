@@ -1,60 +1,65 @@
 import readlineSync from "readline-sync";
+import { AutorController } from "../controllers/autorController";
 
 export class AutorMenu {
+  private autorController = new AutorController();
 
-    public async show(): Promise<void> {
+  public async show(): Promise<void> {
+    let opcao: number;
 
-        let option: number;
+    do {
+      console.clear();
 
-        do {
+      console.log("========== AUTORES ==========");
+      console.log("1 - Cadastrar");
+      console.log("2 - Listar");
+      console.log("3 - Buscar por ID");
+      console.log("4 - Atualizar");
+      console.log("5 - Remover");
+      console.log("0 - Voltar");
 
-            console.clear();
+      opcao = readlineSync.questionInt("\nEscolha uma opção: ");
 
-            console.log("========== AUTORES ==========");
-            console.log("1 - Cadastrar");
-            console.log("2 - Listar");
-            console.log("3 - Buscar por ID");
-            console.log("4 - Atualizar");
-            console.log("5 - Remover");
-            console.log("0 - Voltar");
+      switch (opcao) {
+        case 1:
+          const nome = readlineSync.question("Nome: ");
+          const nacionalidade = readlineSync.question("Nacionalidade: ");
 
-            option = readlineSync.questionInt("\nEscolha uma opcao: ");
+          try {
+            await this.autorController.cadastrar(nome, nacionalidade);
+            console.log("\n✅ Autor cadastrado com sucesso!");
+          } catch (error) {
+            console.log(`\n❌ ${(error as Error).message}`);
+          }
 
-            switch (option) {
+          readlineSync.question("\nPressione ENTER para continuar...");
+          break;
+        case 2:
+          const autores = await this.autorController.listarAutores();
 
-                case 1:
-                    console.log("\nCadastrar Autor");
-                    break;
+          console.clear();
+          console.log("========== AUTORES ==========\n");
 
-                case 2:
-                    console.log("\nListar Autores");
-                    break;
+          if (autores.length === 0) {
+            console.log("Nenhum autor cadastrado.");
+          } else {
+            autores.forEach((autor) => {
+              console.log(`ID: ${autor.id}`);
+              console.log(`Nome: ${autor.nome}`);
+              console.log(`Nacionalidade: ${autor.nacionalidade}`);
+              console.log("---------------------------");
+            });
+          }
 
-                case 3:
-                    console.log("\nBuscar Autor");
-                    break;
+          readlineSync.question("\nPressione ENTER para continuar...");
+          break;
+        case 0:
+          break;
 
-                case 4:
-                    console.log("\nAtualizar Autor");
-                    break;
-
-                case 5:
-                    console.log("\nRemover Autor");
-                    break;
-
-                case 0:
-                    break;
-
-                default:
-                    console.log("\nOpção inválida.");
-            }
-
-            if (option !== 0) {
-                readlineSync.question("\nPressione ENTER...");
-            }
-
-        } while (option !== 0);
-
-    }
-
+        default:
+          console.log("\nOpção inválida!");
+          readlineSync.question("\nPressione ENTER...");
+      }
+    } while (opcao !== 0);
+  }
 }

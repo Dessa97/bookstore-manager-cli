@@ -1,17 +1,15 @@
+import { AutorService } from "../services/autorService";
+import { Autor } from "../models/autor";
+
 export class AutorController {
-  listarAutores(): string[] {
-    return [];
-  }
+  private autorService = new AutorService();
 
-  criarAutor(): void {
-    // Implementação futura
-  }
+  public async cadastrar(nome: string, nacionalidade: string): Promise<void> {
+    const autor = new Autor(nome, nacionalidade);
 
-  atualizarAutor(): void {
-    // Implementação futura
+    await this.autorService.cadastrarAutor(autor);
   }
-
-  deletarAutor(): void {
-    // Implementação futura
+  public async listarAutores(): Promise<Autor[]> {
+    return await this.autorService.listarAutores();
   }
 }
