@@ -8,7 +8,6 @@ CREATE TABLE autores (
 CREATE TABLE livros (
     id SERIAL PRIMARY KEY,
     titulo VARCHAR(200) NOT NULL,
-    isbn VARCHAR(20) UNIQUE NOT NULL,
     ano_publicacao INT NOT NULL CHECK(ano_publicacao >= 1800 AND ano_publicacao <= EXTRACT(YEAR FROM CURRENT_DATE)),
     quantidade_total INT NOT NULL CHECK(quantidade_total >= 0),
     quantidade_disponivel INT NOT NULL CHECK(quantidade_disponivel >= 0),
