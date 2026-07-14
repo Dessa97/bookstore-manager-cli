@@ -7,7 +7,7 @@ export class Emprestimo implements IEmprestimo {
     public cliente_id: number,
     public data_emprestimo: string,
     public data_devolucao?: string,
-    public devolvido?: boolean,
+    public devolvido: boolean = false,
     public id?: number,
   ) {}
 

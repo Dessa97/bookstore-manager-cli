@@ -1,59 +1,160 @@
 import readlineSync from "readline-sync";
-
+import { EmprestimoController } from "../controllers/emprestimoController";
 export class EmprestimoMenu {
+
+    private emprestimoController = new EmprestimoController();
 
     public async show(): Promise<void> {
 
-        let option: number;
+        let opcao: number;
 
         do {
 
             console.clear();
 
             console.log("========== EMPRÉSTIMOS ==========");
-            console.log("1 - Cadastrar");
-            console.log("2 - Listar");
-            console.log("3 - Buscar por ID");
-            console.log("4 - Atualizar");
-            console.log("5 - Remover");
+            console.log("1 - Realizar empréstimo");
+            console.log("2 - Listar empréstimos");
+            console.log("3 - Buscar empréstimo por ID");
+            console.log("4 - Registrar devolução");
+            console.log("5 - Excluir empréstimo");
             console.log("0 - Voltar");
 
-            option = readlineSync.questionInt("\nEscolha uma opcao: ");
+            opcao = readlineSync.questionInt("\nEscolha uma opcao: ");
 
-            switch (option) {
+            switch (opcao) {
 
-                case 1:
-                    console.log("\nCadastrar Empréstimo");
+                case 1: {
+                    const livroId = readlineSync.questionInt("ID do livro: ");
+                    const clienteId = readlineSync.questionInt("ID do cliente: ");
+
+                    try {
+
+                        await this.emprestimoController.cadastrarEmprestimo(
+                            livroId,
+                            clienteId
+                        );
+
+                        console.log("\n✅ Empréstimo realizado com sucesso!");
+
+                    } catch (error) {
+
+                        console.log(`\n❌ ${(error as Error).message}`);
+
+                    }
+
+                    this.pausar();
                     break;
+                }
 
-                case 2:
-                    console.log("\nListar Empréstimos");
-                    break;
+                case 2: {
 
-                case 3:
-                    console.log("\nBuscar Empréstimo");
-                    break;
+                    const emprestimos = await this.emprestimoController.listarEmprestimos();
 
-                case 4:
-                    console.log("\nAtualizar Empréstimo");
-                    break;
+                    if (emprestimos.length === 0) {
 
-                case 5:
-                    console.log("\nRemover Empréstimo");
+                        console.log("\nNenhum empréstimo encontrado.");
+
+                    } else {
+
+                        emprestimos.forEach(emprestimo => {
+
+                            console.log("----------------------------");
+                            console.log(`ID: ${emprestimo.id}`);
+                            console.log(`Livro: ${emprestimo.livro_id}`);
+                            console.log(`Cliente: ${emprestimo.cliente_id}`);
+                            console.log(`Data: ${emprestimo.data_emprestimo}`);
+                            console.log(`Devolvido: ${emprestimo.devolvido ? "Sim" : "Não"}`);
+
+                        });
+
+                    }
+
+                    this.pausar();
                     break;
+                }
+
+                case 3: {
+
+                    const id = readlineSync.questionInt("Informe o ID: ");
+
+                    const emprestimo =
+                        await this.emprestimoController.buscarPorId(id);
+
+                    if (!emprestimo) {
+
+                        console.log("\nEmpréstimo não encontrado.");
+
+                    } else {
+
+                        console.log("\n===== EMPRÉSTIMO =====");
+                        console.log(`Livro: ${emprestimo.livro_id}`);
+                        console.log(`Cliente: ${emprestimo.cliente_id}`);
+                        console.log(`Data empréstimo: ${emprestimo.data_emprestimo}`);
+                        console.log(`Devolvido: ${emprestimo.devolvido ? "Sim" : "Não"}`);
+
+                    }
+
+                    this.pausar();
+                    break;
+                }
+
+                case 4: {
+
+                    const id = readlineSync.questionInt("ID do emprestimo: ");
+
+                    try {
+
+                        await this.emprestimoController.devolverEmprestimo(id);
+
+                        console.log("\n✅ Livro devolvido com sucesso!");
+
+                    } catch (error) {
+
+                        console.log(`\n❌ ${(error as Error).message}`);
+
+                    }
+
+                    this.pausar();
+                    break;
+                }
+
+                case 5: {
+
+                    const id = readlineSync.questionInt("ID do emprestimo: ");
+
+                    try {
+
+                        await this.emprestimoController.excluirEmprestimo(id);
+
+                        console.log("\n✅ Empréstimo removido.");
+
+                    } catch (error) {
+
+                        console.log(`\n❌ ${(error as Error).message}`);
+
+                    }
+
+                    this.pausar();
+                    break;
+                }
 
                 case 0:
                     break;
 
                 default:
-                    console.log("\nOpcao inválida.");
+                    console.log("\nOpção inválida.");
+                    this.pausar();
+
             }
 
-            if (option !== 0) {
-                readlineSync.question("\nPressione ENTER...");
-            }
+        } while (opcao !== 0);
 
-        } while (option !== 0);
+    }
+
+    private pausar(): void {
+
+        readlineSync.question("\nPressione ENTER para continuar...");
 
     }
 

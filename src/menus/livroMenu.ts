@@ -22,14 +22,14 @@ export class LivroMenu {
 
       switch (opcao) {
         case 1: {
-          const titulo = readlineSync.question("Título: ");
+          const titulo = readlineSync.question("Titulo: ");
           const ano_publicacao = readlineSync.questionInt(
-            "Ano de Publicação: ",
+            "Ano de Publicacao: ",
           );
           const quantidade_total =
             readlineSync.questionInt("Quantidade Total: ");
           const quantidade_disponivel = readlineSync.questionInt(
-            "Quantidade Disponível: ",
+            "Quantidade Disponivel: ",
           );
           const autor_id = readlineSync.questionInt("ID do autor: ");
 
@@ -115,7 +115,7 @@ export class LivroMenu {
             });
 
             const ano_publicacao = readlineSync.questionInt(
-              "Novo ano de publicação: ",
+              "Novo ano de publicacao: ",
               {
                 defaultInput: String(livro.ano_publicacao),
               },
@@ -129,7 +129,7 @@ export class LivroMenu {
             );
 
             const quantidade_disponivel = readlineSync.questionInt(
-              "Nova quantidade disponível: ",
+              "Nova quantidade disponivel: ",
               {
                 defaultInput: String(livro.quantidade_disponivel),
               },

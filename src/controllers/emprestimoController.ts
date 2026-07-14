@@ -1,17 +1,35 @@
+import { Emprestimo } from "../models/emprestimo";
+import { EmprestimoService } from "../services/emprestimoService";
+
 export class EmprestimoController {
-  listarEmprestimos(): string[] {
-    return [];
+  private emprestimoService = new EmprestimoService();
+
+  public async cadastrarEmprestimo(
+    livro_id: number,
+    cliente_id: number,
+  ): Promise<void> {
+    const emprestimo = new Emprestimo(
+      livro_id,
+      cliente_id,
+      new Date().toISOString().slice(0, 10),
+    );
+
+    await this.emprestimoService.cadastrarEmprestimo(emprestimo);
   }
 
-  criarEmprestimo(): void {
-    // Implementação futura
+  public async listarEmprestimos(): Promise<Emprestimo[]> {
+    return await this.emprestimoService.listarEmprestimos();
   }
 
-  atualizarEmprestimo(): void {
-    // Implementação futura
+  public async buscarPorId(id: number): Promise<Emprestimo | null> {
+    return await this.emprestimoService.buscarEmprestimoPorId(id);
   }
 
-  deletarEmprestimo(): void {
-    // Implementação futura
+  public async devolverEmprestimo(id: number): Promise<void> {
+    await this.emprestimoService.devolverEmprestimo(id);
+  }
+
+  public async excluirEmprestimo(id: number): Promise<void> {
+    await this.emprestimoService.excluirEmprestimo(id);
   }
 }
