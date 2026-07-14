@@ -39,7 +39,6 @@ export class AutorMenu {
           const autores = await this.autorController.listarAutores();
 
           console.clear();
-          console.log("========== AUTORES ==========\n");
 
           if (autores.length === 0) {
             console.log("Nenhum autor cadastrado.");
