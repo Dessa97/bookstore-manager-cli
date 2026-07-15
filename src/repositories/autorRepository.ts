@@ -25,6 +25,24 @@ export class AutorRepository {
     await db.query(sql, [autor.nome, autor.nacionalidade]);
   }
 
+  public async buscarAutorPorNomeENacionalidade(nome: string, nacionalidade: string): Promise<Autor | null> {
+    const sql = `
+        SELECT *
+        FROM autores
+        WHERE nome = $1 AND nacionalidade = $2;
+    `;
+
+    const result = await db.query(sql, [nome, nacionalidade]);
+
+    if (result.rows.length === 0) {
+      return null;
+    }
+
+    const row = result.rows[0];
+
+    return new Autor(row.nome, row.nacionalidade, row.id);
+  }
+
   public async buscarAutorPorId(id: number): Promise<Autor | null> {
     const sql = `
         SELECT *

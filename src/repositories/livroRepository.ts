@@ -25,6 +25,24 @@ export class LivroRepository {
     await db.query(sql, [livro.titulo, livro.ano_publicacao, livro.quantidade_total, livro.quantidade_disponivel, livro.autor_id]);
   }
 
+  public async buscarLivroPorTituloEAno(titulo: string, ano_publicacao: number, autor_id: number): Promise<Livro | null> {
+    const sql = `
+        SELECT *
+        FROM livros
+        WHERE titulo = $1 AND ano_publicacao = $2 AND autor_id = $3;
+    `;
+
+    const result = await db.query(sql, [titulo, ano_publicacao, autor_id]);
+
+    if (result.rows.length === 0) {
+      return null;
+    }
+
+    const row = result.rows[0];
+
+    return new Livro(row.titulo, row.ano_publicacao, row.quantidade_total, row.quantidade_disponivel, row.autor_id, row.id);
+  }
+
   public async buscarLivroPorId(id: number): Promise<Livro | null> {
     const sql = `
         SELECT *

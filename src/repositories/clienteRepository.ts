@@ -43,6 +43,24 @@ export class ClienteRepository {
     return new Cliente(row.nome, row.email, row.telefone, row.id);
   }
 
+  public async buscarClientePorEmail(email: string): Promise<Cliente | null> {
+    const sql = `
+        SELECT *
+        FROM clientes
+        WHERE email = $1;
+    `;
+
+    const result = await db.query(sql, [email]);
+
+    if (result.rows.length === 0) {
+      return null;
+    }
+
+    const row = result.rows[0];
+
+    return new Cliente(row.nome, row.email, row.telefone, row.id);
+  }
+
   public async atualizarCliente(cliente: Cliente): Promise<void> {
     const sql = `
         UPDATE clientes

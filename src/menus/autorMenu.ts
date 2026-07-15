@@ -17,11 +17,13 @@ export class AutorMenu {
       console.log("4 - Atualizar");
       console.log("5 - Remover");
       console.log("0 - Voltar");
+      console.log("---------------------------")
 
       opcao = readlineSync.questionInt("\nEscolha uma opcao: ");
 
       switch (opcao) {
         case 1: {
+          console.log("\n===== CADASTRAR AUTOR =====");
           const nome = readlineSync.question("Nome: ");
           const nacionalidade = readlineSync.question("Nacionalidade: ");
 
@@ -79,7 +81,7 @@ export class AutorMenu {
           if (!autor) {
             console.log("\nAutor não encontrado.");
           } else {
-            console.log("\n=== Dados atuais ===");
+            console.log("\n=== DADOS ATUAIS ===");
             console.log(`Nome: ${autor.nome}`);
             console.log(`Nacionalidade: ${autor.nacionalidade}`);
 
