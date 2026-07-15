@@ -85,4 +85,18 @@ export class LivroRepository {
 
     await db.query(sql, [id]);
   }
+  public async livroPossuiEmprestimo(livro_id: number): Promise<boolean> {
+
+    const sql = `
+        SELECT 1
+        FROM emprestimos
+        WHERE livro_id = $1
+        LIMIT 1;
+    `;
+
+    const result = await db.query(sql, [livro_id]);
+
+    return result.rows.length > 0;
+
+}
 }
