@@ -4,8 +4,8 @@ import { Autor } from "../models/autor";
 export class AutorService {
   private autorRepository = new AutorRepository();
 
-  private formatarNomeAutor(nome: string): string {
-    return nome
+  private formatarNomeAutor(nome_autor: string): string {
+    return nome_autor
       .trim()
       .split(/\s+/)
       .map(
@@ -20,15 +20,15 @@ export class AutorService {
   }
 
   public async cadastrarAutor(autor: Autor): Promise<void> {
-    if (!autor.nome.trim()) {
+    if (!autor.nome_autor.trim()) {
       throw new Error("O nome do autor é obrigatório.");
     }
 
-    autor.nome = this.formatarNomeAutor(autor.nome);
+    autor.nome_autor = this.formatarNomeAutor(autor.nome_autor);
     autor.nacionalidade = this.formatarNacionalidade(autor.nacionalidade);
 
     const autorDuplicado = await this.autorRepository.buscarAutorPorNomeENacionalidade(
-      autor.nome,
+      autor.nome_autor,
       autor.nacionalidade,
     );
 
@@ -55,15 +55,15 @@ export class AutorService {
       throw new Error("Autor não encontrado.");
     }
 
-    if (!autor.nome.trim()) {
+    if (!autor.nome_autor.trim()) {
       throw new Error("O nome do autor é obrigatório.");
     }
 
-    autor.nome = this.formatarNomeAutor(autor.nome);
+    autor.nome_autor = this.formatarNomeAutor(autor.nome_autor);
     autor.nacionalidade = this.formatarNacionalidade(autor.nacionalidade);
 
     const autorDuplicado = await this.autorRepository.buscarAutorPorNomeENacionalidade(
-      autor.nome,
+      autor.nome_autor,
       autor.nacionalidade,
     );
 

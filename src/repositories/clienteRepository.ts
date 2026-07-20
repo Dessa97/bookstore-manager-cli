@@ -6,23 +6,23 @@ export class ClienteRepository {
     const sql = `
         SELECT *
         FROM clientes
-        ORDER BY nome;
+        ORDER BY nome_cliente;
     `;
 
     const result = await db.query(sql);
 
     return result.rows.map(
-      (row) => new Cliente(row.nome, row.email, row.telefone, row.id),
+      (row) => new Cliente(row.nome_cliente, row.email, row.telefone, row.id),
     );
   }
 
   public async cadastrarCliente(cliente: Cliente): Promise<void> {
     const sql = `
-            INSERT INTO clientes (nome, email, telefone)
+            INSERT INTO clientes (nome_cliente, email, telefone)
             VALUES ($1, $2, $3)
         `;
 
-    await db.query(sql, [cliente.nome, cliente.email, cliente.telefone]);
+    await db.query(sql, [cliente.nome_cliente, cliente.email, cliente.telefone]);
   }
 
   public async buscarClientePorId(id: number): Promise<Cliente | null> {
@@ -40,7 +40,7 @@ export class ClienteRepository {
 
     const row = result.rows[0];
 
-    return new Cliente(row.nome, row.email, row.telefone, row.id);
+    return new Cliente(row.nome_cliente, row.email, row.telefone, row.id);
   }
 
   public async buscarClientePorEmail(email: string): Promise<Cliente | null> {
@@ -58,20 +58,20 @@ export class ClienteRepository {
 
     const row = result.rows[0];
 
-    return new Cliente(row.nome, row.email, row.telefone, row.id);
+    return new Cliente(row.nome_cliente, row.email, row.telefone, row.id);
   }
 
   public async atualizarCliente(cliente: Cliente): Promise<void> {
     const sql = `
         UPDATE clientes
         SET
-            nome = $1,
+            nome_cliente = $1,
             email = $2,
             telefone = $3
         WHERE id = $4;
     `;
 
-    await db.query(sql, [cliente.nome, cliente.email, cliente.telefone, cliente.id]);
+    await db.query(sql, [cliente.nome_cliente, cliente.email, cliente.telefone, cliente.id]);
   }
 
   public async excluirCliente(id: number): Promise<void> {

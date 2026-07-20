@@ -22,12 +22,12 @@ export class ClienteMenu {
 
       switch (opcao) {
         case 1: {
-          const nome = readlineSync.question("Nome: ");
+          const nome_cliente = readlineSync.question("Nome: ");
           const email = readlineSync.question("Email: ");
           const telefone = readlineSync.question("Telefone: ");
 
           try {
-            await this.clienteController.cadastrar(nome, email, telefone);
+            await this.clienteController.cadastrar(nome_cliente, email, telefone);
             console.log("\n✅ Cliente cadastrado com sucesso!");
           } catch (error) {
             console.log(`\n❌ ${(error as Error).message}`);
@@ -47,7 +47,7 @@ export class ClienteMenu {
           } else {
             clientes.forEach((cliente) => {
               console.log(`ID: ${cliente.id}`);
-              console.log(`Nome: ${cliente.nome}`);
+              console.log(`Nome: ${cliente.nome_cliente}`);
               console.log(`Email: ${cliente.email}`);
               console.log(`Telefone: ${cliente.telefone}`);
               console.log("---------------------------");
@@ -67,7 +67,7 @@ export class ClienteMenu {
           } else {
             console.log("\n===== CLIENTE =====");
             console.log(`ID: ${cliente.id}`);
-            console.log(`Nome: ${cliente.nome}`);
+            console.log(`Nome: ${cliente.nome_cliente}`);
             console.log(`Email: ${cliente.email}`);
             console.log(`Telefone: ${cliente.telefone}`);
           }
@@ -84,12 +84,12 @@ export class ClienteMenu {
             console.log("\nCliente não encontrado.");
           } else {
             console.log("\n=== Dados atuais ===");
-            console.log(`Nome: ${cliente.nome}`);
+            console.log(`Nome: ${cliente.nome_cliente}`);
             console.log(`Email: ${cliente.email}`);
             console.log(`Telefone: ${cliente.telefone}`);
 
             const nome = readlineSync.question("Novo nome: ", {
-              defaultInput: cliente.nome,
+              defaultInput: cliente.nome_cliente,
             });
 
             const email = readlineSync.question("Novo email: ", {

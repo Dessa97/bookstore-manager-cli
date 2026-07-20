@@ -1,7 +1,7 @@
 
 CREATE TABLE autores (
     id SERIAL PRIMARY KEY,
-    nome VARCHAR(150) NOT NULL,
+    nome_autor VARCHAR(150) NOT NULL,
     nacionalidade VARCHAR(80)
 );
 
@@ -21,7 +21,7 @@ CREATE TABLE livros (
 
 CREATE TABLE clientes (
     id SERIAL PRIMARY KEY,
-    nome VARCHAR(150) NOT NULL,
+    nome_cliente VARCHAR(150) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     telefone VARCHAR(20) NOT NULL
 );
