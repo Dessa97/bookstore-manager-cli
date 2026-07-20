@@ -4,8 +4,8 @@ import { Cliente } from "../models/cliente";
 export class ClienteController {
   private clienteService = new ClienteService();
 
-  public async cadastrar(nome: string, email: string, telefone: string): Promise<void> {
-    const cliente = new Cliente(nome, email, telefone);
+  public async cadastrar(nome_cliente: string, email: string, telefone: string): Promise<void> {
+    const cliente = new Cliente(nome_cliente, email, telefone);
 
     await this.clienteService.cadastrarCliente(cliente);
   }
@@ -18,11 +18,11 @@ export class ClienteController {
   }
   public async atualizarCliente(
     id: number,
-    nome: string,
+    nome_cliente: string,
     email: string,
     telefone: string,
   ): Promise<void> {
-    const cliente = new Cliente(nome, email, telefone, id);
+    const cliente = new Cliente(nome_cliente, email, telefone, id);
 
     await this.clienteService.atualizarCliente(cliente);
   }

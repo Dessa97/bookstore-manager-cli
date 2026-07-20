@@ -3,10 +3,11 @@ import { AutorMenu } from "./autorMenu";
 import { ClienteMenu } from "./clienteMenu";
 import { EmprestimoMenu } from "./emprestimoMenu";
 import { LivroMenu } from "./livroMenu";
+import { RelatorioMenu } from "./relatorioMenu";
 
 export class MainMenu {
   public async show(): Promise<void> {
-    let option: number;
+    let opcao: number;
 
     do {
       console.clear();
@@ -22,9 +23,9 @@ export class MainMenu {
       console.log("0 - Sair");
       console.log("==================================");
 
-      option = readlineSync.questionInt("Escolha uma opcao: ");
+      opcao = readlineSync.questionInt("Escolha uma opcao: ");
 
-      switch (option) {
+      switch (opcao) {
         case 1:
           const autorMenu = new AutorMenu();
           await autorMenu.show();
@@ -45,7 +46,8 @@ export class MainMenu {
           break;
 
         case 5:
-          console.log("\nMenu de Relatórios");
+          const relatorioMenu = new RelatorioMenu();
+          await relatorioMenu.show();
           break;
 
         case 0:
@@ -56,10 +58,10 @@ export class MainMenu {
           console.log("\nOpção inválida!");
       }
 
-      if (option !== 0) {
+      if (opcao !== 0) {
         readlineSync.question("\nPressione ENTER para continuar...");
       }
 
-    } while (option !== 0);
+    } while (opcao !== 0);
   }
 }

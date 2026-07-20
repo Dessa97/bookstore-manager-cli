@@ -1,12 +1,45 @@
 import { ClienteRepository } from "../repositories/clienteRepository";
 import { Cliente } from "../models/cliente";
+import { capitalizarPalavras, formatarTelefone, validarEmail } from "../utils/stringUtils";
 
 export class ClienteService {
   private clienteRepository = new ClienteRepository();
 
+  private validarDadosCliente(cliente: Cliente): void {
+    if (!validarEmail(cliente.email)) {
+      throw new Error("Email inválido. Formato esperado: usuario@dominio.com");
+    }
+
+    if (cliente.nome === cliente.telefone) {
+      throw new Error("O nome e o telefone não podem ser iguais.");
+    }
+
+    if (cliente.nome === cliente.email) {
+      throw new Error("O nome e o email não podem ser iguais.");
+    }
+
+    if (cliente.nome === cliente.telefone && cliente.nome === cliente.email) {
+      throw new Error("O nome, telefone e email não podem ser iguais.");
+    }
+  }
+
   public async cadastrarCliente(cliente: Cliente): Promise<void> {
     if (!cliente.nome.trim()) {
       throw new Error("O nome do cliente é obrigatório.");
+    }
+
+    cliente.nome = capitalizarPalavras(cliente.nome);
+    cliente.email = cliente.email.toLowerCase();
+    cliente.telefone = formatarTelefone(cliente.telefone);
+
+    this.validarDadosCliente(cliente);
+
+    const clienteComEmail = await this.clienteRepository.buscarClientePorEmail(
+      cliente.email,
+    );
+
+    if (clienteComEmail) {
+      throw new Error("Já existe um cliente cadastrado com este email.");
     }
 
     await this.clienteRepository.cadastrarCliente(cliente);
@@ -30,6 +63,22 @@ export class ClienteService {
 
     if (!cliente.nome.trim()) {
       throw new Error("O nome do cliente é obrigatório.");
+    }
+
+    cliente.nome = capitalizarPalavras(cliente.nome);
+    cliente.email = cliente.email.toLowerCase();
+    cliente.telefone = formatarTelefone(cliente.telefone);
+
+    this.validarDadosCliente(cliente);
+
+    if (clienteExistente.email !== cliente.email) {
+      const clienteComEmail = await this.clienteRepository.buscarClientePorEmail(
+        cliente.email,
+      );
+
+      if (clienteComEmail) {
+        throw new Error("Já existe um cliente cadastrado com este email.");
+      }
     }
 
     await this.clienteRepository.atualizarCliente(cliente);

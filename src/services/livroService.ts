@@ -16,6 +16,18 @@ export class LivroService {
       throw new Error("Autor não encontrado.");
     }
 
+    const livroDuplicado = await this.livroRepository.buscarLivroPorTituloEAno(
+      livro.titulo,
+      livro.ano_publicacao,
+      livro.autor_id,
+    );
+
+    if (livroDuplicado) {
+      throw new Error(
+        "Já existe um livro com este título, ano de publicação e autor.",
+      );
+    }
+
     await this.livroRepository.cadastrarLivro(livro);
   }
 
@@ -53,6 +65,11 @@ export class LivroService {
 
     if (!livro) {
       throw new Error("Livro não encontrado.");
+    }
+    const livroEmprestado =
+      await this.livroRepository.livroPossuiEmprestimo(id);
+    if (livroEmprestado) {
+      throw new Error("Não é possível excluir um livro que está emprestado.");
     }
 
     await this.livroRepository.excluirLivro(id);

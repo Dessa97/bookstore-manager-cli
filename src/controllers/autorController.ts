@@ -4,8 +4,8 @@ import { Autor } from "../models/autor";
 export class AutorController {
   private autorService = new AutorService();
 
-  public async cadastrar(nome: string, nacionalidade: string): Promise<void> {
-    const autor = new Autor(nome, nacionalidade);
+  public async cadastrar(nome_autor: string, nacionalidade: string): Promise<void> {
+    const autor = new Autor(nome_autor, nacionalidade);
 
     await this.autorService.cadastrarAutor(autor);
   }
@@ -18,10 +18,10 @@ export class AutorController {
   }
   public async atualizarAutor(
     id: number,
-    nome: string,
+    nome_autor: string,
     nacionalidade: string,
   ): Promise<void> {
-    const autor = new Autor(nome, nacionalidade, id);
+    const autor = new Autor(nome_autor, nacionalidade, id);
 
     await this.autorService.atualizarAutor(autor);
   }

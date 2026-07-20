@@ -1,5 +1,5 @@
 export interface IAutor {
   id?: number;
-  nome: string;
+  nome_autor: string;
   nacionalidade: string;
 }

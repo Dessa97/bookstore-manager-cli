@@ -17,16 +17,18 @@ export class AutorMenu {
       console.log("4 - Atualizar");
       console.log("5 - Remover");
       console.log("0 - Voltar");
+      console.log("---------------------------")
 
       opcao = readlineSync.questionInt("\nEscolha uma opcao: ");
 
       switch (opcao) {
         case 1: {
-          const nome = readlineSync.question("Nome: ");
+          console.log("\n===== CADASTRAR AUTOR =====");
+          const nome_autor = readlineSync.question("Nome: ");
           const nacionalidade = readlineSync.question("Nacionalidade: ");
 
           try {
-            await this.autorController.cadastrar(nome, nacionalidade);
+            await this.autorController.cadastrar(nome_autor, nacionalidade);
             console.log("\n✅ Autor cadastrado com sucesso!");
           } catch (error) {
             console.log(`\n❌ ${(error as Error).message}`);
@@ -45,7 +47,7 @@ export class AutorMenu {
           } else {
             autores.forEach((autor) => {
               console.log(`ID: ${autor.id}`);
-              console.log(`Nome: ${autor.nome}`);
+              console.log(`Nome: ${autor.nome_autor}`);
               console.log(`Nacionalidade: ${autor.nacionalidade}`);
               console.log("---------------------------");
             });
@@ -64,7 +66,7 @@ export class AutorMenu {
           } else {
             console.log("\n===== AUTOR =====");
             console.log(`ID: ${autor.id}`);
-            console.log(`Nome: ${autor.nome}`);
+            console.log(`Nome: ${autor.nome_autor}`);
             console.log(`Nacionalidade: ${autor.nacionalidade}`);
           }
 
@@ -79,12 +81,12 @@ export class AutorMenu {
           if (!autor) {
             console.log("\nAutor não encontrado.");
           } else {
-            console.log("\n=== Dados atuais ===");
-            console.log(`Nome: ${autor.nome}`);
+            console.log("\n=== DADOS ATUAIS ===");
+            console.log(`Nome: ${autor.nome_autor}`);
             console.log(`Nacionalidade: ${autor.nacionalidade}`);
 
-            const nome = readlineSync.question("Novo nome: ", {
-              defaultInput: autor.nome,
+            const nome_autor = readlineSync.question("Novo nome: ", {
+              defaultInput: autor.nome_autor,
             });
 
             const nacionalidade = readlineSync.question(
@@ -97,7 +99,7 @@ export class AutorMenu {
             try {
               await this.autorController.atualizarAutor(
                 id,
-                nome,
+                nome_autor,
                 nacionalidade,
               );
 

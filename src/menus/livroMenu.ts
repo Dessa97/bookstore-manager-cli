@@ -1,8 +1,10 @@
 import readlineSync from "readline-sync";
 import { LivroController } from "../controllers/livroController";
+import { AutorRepository } from "../repositories/autorRepository";
 
 export class LivroMenu {
   private livroController = new LivroController();
+  private autorRepository = new AutorRepository();
 
   public async show(): Promise<void> {
     let opcao: number;
@@ -58,16 +60,19 @@ export class LivroMenu {
           if (livros.length === 0) {
             console.log("Nenhum livro cadastrado.");
           } else {
-            livros.forEach((livro) => {
+            for (const livro of livros) {
+              const autor = await this.autorRepository.buscarAutorPorId(livro.autor_id);
+
               console.log(`ID: ${livro.id}`);
               console.log(`Título: ${livro.titulo}`);
+              console.log(`Autor: ${autor ? autor.nome : livro.autor_id}`);
               console.log(`Ano de Publicação: ${livro.ano_publicacao}`);
               console.log(`Quantidade Total: ${livro.quantidade_total}`);
               console.log(
                 `Quantidade Disponível: ${livro.quantidade_disponivel}`,
               );
               console.log("---------------------------");
-            });
+            }
           }
 
           readlineSync.question("\nPressione ENTER para continuar...");
@@ -81,9 +86,12 @@ export class LivroMenu {
           if (!livro) {
             console.log("\nLivro não encontrado.");
           } else {
+            const autor = await this.autorRepository.buscarAutorPorId(livro.autor_id);
+
             console.log("\n===== LIVRO =====");
             console.log(`ID: ${livro.id}`);
-            console.log(`Titulo: ${livro.titulo}`);
+            console.log(`Título: ${livro.titulo}`);
+            console.log(`Autor: ${autor ? autor.nome : livro.autor_id}`);
             console.log(`Ano de Publicação: ${livro.ano_publicacao}`);
             console.log(`Quantidade Total: ${livro.quantidade_total}`);
             console.log(
